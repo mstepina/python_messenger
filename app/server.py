@@ -30,7 +30,7 @@ class ServerProtocol(asyncio.Protocol):
                         self.connection_lost("login duplicate")
                         double = True
                 if double == False:
-                    self.login = decoded.replace("login:", "").replace("\r\n", "")
+                    self.login = login
                     self.transport.write(
                         f"Привет, {self.login}!\n".encode()
                         )
@@ -53,7 +53,7 @@ class ServerProtocol(asyncio.Protocol):
         for user in self.server.clients:
             user.transport.write(message.encode())
         
-        self.server.messages.append(message.replace("login:", "").replace("\r", "").replace("\n", ""))
+        self.server.messages.append(message.replace("login:", "").replace("\r\n", ""))
         if (len(self.server.messages) > 10):
             self.server.messages = self.server.messages[1:]
     
